@@ -88,7 +88,7 @@ def quantize(img: np.array) -> np.array:
 
 
 def random_noise(img: np.array) -> np.array:
-    return img - 0.5 < np.random.uniform(0, 1, img.shape)
+    return img < np.random.uniform(0, 1, img.shape)
 
 
 def get_bayer_matrix(n: int) -> np.array:
@@ -126,7 +126,7 @@ def error_diffusion(img: np.array, method: str) -> np.array:
     for y in range(ni.shape[0]):
         for x in range(ni.shape[1]):
             old_pixel = ni[y, x]
-            new_pixel = 1.0 if old_pixel > 0.5 else 0.0
+            new_pixel = 1.0 if old_pixel >= 0.5 else 0.0
             quantization_error = old_pixel - new_pixel
             ni[y, x] = new_pixel
             for dx, dy, diffusion_coefficient in diff_map:

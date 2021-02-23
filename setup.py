@@ -8,8 +8,10 @@ def main():
         description="Image to braillecode converter",
         author="rr-",
         author_email="rr-@sakuya.pl",
-        entry_points={"console_scripts": ["brailleimg = brailleimg.__main__:cli"]},
-        install_requires=["click-pathlib", "click"],
+        entry_points={
+            "console_scripts": ["brailleimg = brailleimg.__main__:cli"]
+        },
+        install_requires=["scikit-image", "numpy", "click-pathlib", "click"],
         tests_require=["pytest"],
     )
 
