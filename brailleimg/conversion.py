@@ -4,6 +4,8 @@ INDICES = [(0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1), (3, 0), (3, 1)]
 
 
 def img_to_braille(img):
+    img = img.astype(np.uint8)
+
     width, height = img.shape[1], img.shape[0]
     padded_height = ((height + 3) >> 2) << 2
     padded_width = ((width + 1) >> 1) << 1

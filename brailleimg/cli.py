@@ -19,6 +19,17 @@ import skimage.transform
 import skimage.util
 
 
+def try_all_algorithms(img) -> None:
+    for name, func in DITHER_ALGORITHMS.items():
+        if name == "all":
+            continue
+        dithered_img = func(img)
+        print(f"{name}:")
+        print(img_to_braille(dithered_img))
+        print()
+    exit(0)
+
+
 DITHER_ALGORITHMS = {
     "quantize": quantize,
     "random-noise": random_noise,
@@ -35,6 +46,7 @@ DITHER_ALGORITHMS = {
     "sierra2": lambda img: error_diffusion(img, "sierra2"),
     "sierra3": lambda img: error_diffusion(img, "sierra3"),
     "sierra2-4a": lambda img: error_diffusion(img, "sierra-2-4a"),
+    "all": try_all_algorithms,
 }
 
 
