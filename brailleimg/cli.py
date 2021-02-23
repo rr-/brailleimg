@@ -3,7 +3,7 @@ import typing as T
 from pathlib import Path
 
 from brailleimg.conversion import img_to_braille
-from brailleimg.dither import quantize
+from brailleimg.dither import quantize, random_noise
 from brailleimg.util import fit_inside
 
 import click
@@ -11,6 +11,11 @@ import click_pathlib
 import skimage.io
 import skimage.transform
 import skimage.util
+
+DITHER_ALGORITHMS = {
+    "quantize": quantize,
+    "random-noise": random_noise,
+}
 
 
 @click.command()
@@ -25,6 +30,12 @@ import skimage.util
     "--threshold", default=0.5, type=float, help='output "brightness"'
 )
 @click.option(
+    "--dither",
+    type=click.Choice(DITHER_ALGORITHMS.keys()),
+    default=list(DITHER_ALGORITHMS.keys())[0],
+    help="algorithm to quantize",
+)
+@click.option(
     "--invert",
     is_flag=True,
     help="output is meant to be viewed on a dark terminal",
@@ -36,6 +47,7 @@ def cli(
     width: T.Optional[int],
     height: T.Optional[int],
     threshold: float,
+    dither: str,
     invert: bool,
     font_ar: float,
     path: Path,
@@ -62,6 +74,7 @@ def cli(
         threshold = 1 - threshold
         img = skimage.util.invert(img)
 
-    img = quantize(img, threshold)
+    img = img + 0.5 - threshold
+    img = DITHER_ALGORITHMS[dither](img)
 
     print(img_to_braille(img), end="")
