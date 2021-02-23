@@ -3,7 +3,7 @@ import typing as T
 from pathlib import Path
 
 from brailleimg.conversion import img_to_braille
-from brailleimg.dither import quantize, random_noise
+from brailleimg.dither import bayer, quantize, random_noise
 from brailleimg.util import fit_inside
 
 import click
@@ -15,6 +15,9 @@ import skimage.util
 DITHER_ALGORITHMS = {
     "quantize": quantize,
     "random-noise": random_noise,
+    "bayer1": lambda img: bayer(img, order=1),
+    "bayer2": lambda img: bayer(img, order=2),
+    "bayer3": lambda img: bayer(img, order=3),
 }
 
 
