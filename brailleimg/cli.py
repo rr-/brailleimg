@@ -59,6 +59,7 @@ def cli(
 
     img = skimage.transform.resize(img, (height, width), mode="constant")
     if invert:
+        threshold = 1 - threshold
         img = skimage.util.invert(img)
 
     img = quantize(img, threshold)
